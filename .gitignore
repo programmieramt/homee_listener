@@ -1,6 +1,7 @@
 .idea/
 *.iml
 .venv/
+venv/
 .venv /
 target/
 .coverage
