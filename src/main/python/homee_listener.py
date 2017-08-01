@@ -41,24 +41,30 @@ def make_dashing_call(value, name):
     curl_url = 'http://localhost:3030/widgets/%s' % (urllib.unquote(name))
     call(['curl', '-d', curl_data, curl_url])
 
-def checkNode(name, raw_value):
+def checkNode(name, raw_value, unit):
     value = None
     if name in smoke_nodes:
-        value = get_fibaro_smoke_temp(raw_value)
+        value = get_fibaro_smoke_temp(raw_value, unit)
     if name in motion_nodes:
-        value = get_fibaro_motion_temp(raw_value)
+        value = get_fibaro_motion_temp(raw_value, unit)
     if name in door_nodes:
         value = get_fibaro_door_state(raw_value)
     if name in osram_nodes:
         value = get_osram_light_status(raw_value)
+
     if value:
         make_dashing_call(value, name)
 
-def get_fibaro_smoke_temp(value_raw):
-    return str(value_raw) + " Celsius"
 
-def get_fibaro_motion_temp(value_raw):
-    return str(value_raw) + " Celsius"
+def get_fibaro_smoke_temp(value_raw, unit):
+    if unit != "Lux":
+        return str(value_raw) + " Celsius"
+    return None	
+
+def get_fibaro_motion_temp(value_raw, unit):
+    if unit != "Lux":
+        return str(value_raw) + " Celsius"
+    return None	
 
 def get_fibaro_door_state(value_raw):
     if value_raw == 0.0:
@@ -87,8 +93,9 @@ def on_message(ws, raw_message):
         if message['attribute']['current_value'] == message['attribute']['target_value']:
             action_name = homee_dict[message['attribute']['node_id']]
             action_value = message['attribute']['current_value']
+	    action_unit = message['attribute']['unit']
 	    print(action_name, action_value)
-            checkNode(action_name, action_value)
+            checkNode(action_name, action_value, action_unit)
 
 def on_error(ws, error):
     print(error)
