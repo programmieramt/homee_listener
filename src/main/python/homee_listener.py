@@ -48,9 +48,9 @@ def checkNode(name, raw_value, unit):
     if name in motion_nodes:
         value = get_fibaro_motion_temp(raw_value, unit)
     if name in door_nodes:
-        value = get_fibaro_door_state(raw_value)
+        value = get_fibaro_door_state(raw_value, unit)
     if name in osram_nodes:
-        value = get_osram_light_status(raw_value)
+        value = get_osram_light_status(raw_value, unit)
 
     if value:
         make_dashing_call(value, name)
@@ -66,14 +66,16 @@ def get_fibaro_motion_temp(value_raw, unit):
         return str(value_raw) + " Celsius"
     return None	
 
-def get_fibaro_door_state(value_raw):
-    if value_raw == 0.0:
-        value = "Geschlossen"
-    else:
-        value = "Offen"
+def get_fibaro_door_state(value_raw, unit):
+    value = None
+    if unit != '%C2%B0C':
+        if value_raw == 0.0:
+            value = "Geschlossen"
+        else:
+            value = "Offen"
     return value
 
-def get_osram_light_status(value_raw):
+def get_osram_light_status(value_raw, unit):
     if value_raw == 0.0:
         value = "Aus"
     else:
