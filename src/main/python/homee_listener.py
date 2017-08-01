@@ -87,6 +87,7 @@ def on_message(ws, raw_message):
         if message['attribute']['current_value'] == message['attribute']['target_value']:
             action_name = homee_dict[message['attribute']['node_id']]
             action_value = message['attribute']['current_value']
+	    print(action_name, action_value)
             checkNode(action_name, action_value)
 
 def on_error(ws, error):
