@@ -91,7 +91,7 @@ def on_message(ws, raw_message):
         for node in homee_nodes:
             name = node['name']
             id = node['id']
-        homee_dict[id] = name
+            homee_dict[id] = name
 
     if 'attribute' in message and 'nodes' not in message:
         if message['attribute']['current_value'] == message['attribute']['target_value']:
