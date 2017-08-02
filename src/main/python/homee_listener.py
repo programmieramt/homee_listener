@@ -27,9 +27,11 @@ def get_token():
     form_data = {'device_name': 'homebridge', 'device_hardware_id': 'homebridge','device_os': 5,'device_type': 3,'device_app': 1}
     headers={"Content-Type" : "application/x-www-form-urlencoded"}
 
-    r = requests.post(url, data=form_data, headers= headers, auth=HTTPBasicAuth(homee_user, password))
+    print('requesting token')
+    r = requests.post(url, data=form_data, headers= headers, auth=HTTPBasicAuth(homee_user, password)
     token = r.text.split('&')[0].split('=')[1]
     expires = '123'
+    print('recieved token')
     return {'token': token, 'expires': expires}
 
 def getConnection(token):
@@ -106,6 +108,7 @@ def on_close(ws):
     print("### closed ###")
 
 def on_open(ws):
+    print('Connection created')
     ws.send('GET:nodes')
 
 if __name__ == "__main__":
