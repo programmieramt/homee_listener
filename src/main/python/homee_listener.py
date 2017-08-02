@@ -27,13 +27,15 @@ def get_token():
     form_data = {'device_name': 'homebridge', 'device_hardware_id': 'homebridge','device_os': 5,'device_type': 3,'device_app': 1}
     headers={"Content-Type" : "application/x-www-form-urlencoded"}
 
+    print('requesting token')
     r = requests.post(url, data=form_data, headers= headers, auth=HTTPBasicAuth(homee_user, password))
     token = r.text.split('&')[0].split('=')[1]
     expires = '123'
+    print('recieved token')
     return {'token': token, 'expires': expires}
 
 def getConnection(token):
-    connection = "ws://192.168.2.26:7681/connection?access_token="+token
+    connection = "ws://%s:7681/connection?access_token=%s" % (homee_ip, token)
     return connection
 
 def make_dashing_call(value, name):
@@ -89,7 +91,7 @@ def on_message(ws, raw_message):
         for node in homee_nodes:
             name = node['name']
             id = node['id']
-        homee_dict[id] = name
+            homee_dict[id] = name
 
     if 'attribute' in message and 'nodes' not in message:
         if message['attribute']['current_value'] == message['attribute']['target_value']:
@@ -106,6 +108,7 @@ def on_close(ws):
     print("### closed ###")
 
 def on_open(ws):
+    print('Connection created')
     ws.send('GET:nodes')
 
 if __name__ == "__main__":
