@@ -28,7 +28,7 @@ def get_token():
     headers={"Content-Type" : "application/x-www-form-urlencoded"}
 
     print('requesting token')
-    r = requests.post(url, data=form_data, headers= headers, auth=HTTPBasicAuth(homee_user, password)
+    r = requests.post(url, data=form_data, headers= headers, auth=HTTPBasicAuth(homee_user, password))
     token = r.text.split('&')[0].split('=')[1]
     expires = '123'
     print('recieved token')
