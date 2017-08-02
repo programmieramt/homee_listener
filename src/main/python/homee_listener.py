@@ -18,7 +18,7 @@ homee_dict = {}
 smoke_nodes = []
 motion_nodes = ['Lichtsensor', 'Motion_Flur', 'Motion_oben']
 door_nodes = ['Terrassentuer', 'Eingangstuer']
-osram_nodes = ['Fensterlampe', 'TerrasseWand']
+light_nodes = ['Fensterlampe', 'TerrasseWand']
 
 
 def get_token():
@@ -49,8 +49,8 @@ def checkNode(name, raw_value, unit):
         value = get_fibaro_motion_temp(raw_value, unit)
     if name in door_nodes:
         value = get_fibaro_door_state(raw_value, unit)
-    if name in osram_nodes:
-        value = get_osram_light_status(raw_value, unit)
+    if name in light_nodes:
+        value = get_light_status(raw_value, unit)
 
     if value:
         make_dashing_call(value, name)
@@ -75,7 +75,7 @@ def get_fibaro_door_state(value_raw, unit):
             value = "Offen"
     return value
 
-def get_osram_light_status(value_raw, unit):
+def get_light_status(value_raw, unit):
     if value_raw == 0.0:
         value = "Aus"
     else:
