@@ -35,7 +35,7 @@ def get_token():
     return {'token': token, 'expires': expires}
 
 def getConnection(token):
-    connection = "ws://%s/connection?access_token=%s" % (homee_ip, token)
+    connection = "ws://%s:7681/connection?access_token=%s" % (homee_ip, token)
     return connection
 
 def make_dashing_call(value, name):
